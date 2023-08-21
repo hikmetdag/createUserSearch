@@ -1,15 +1,14 @@
 <template>
   <div class="about">
-    <h1>This is an about page</h1>
+    <h2>This app is made for the purpose of learning VueJs by Hikmet Dag.</h2>
   </div>
 </template>
 
-<style>
-@media (min-width: 1024px) {
+<style scoped>
   .about {
     min-height: 100vh;
     display: flex;
-    align-items: center;
+    align-items:flex-start;
+    justify-content: center;
   }
-}
 </style>

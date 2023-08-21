@@ -1,20 +1,27 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, watchEffect } from 'vue'
+import { RouterLink } from 'vue-router'
+import axios from 'axios'
 const clients = ref(null)
 const input = ref('')
-fetch('http://localhost:3000/clients')
-  .then((response) => response.json())
-  .then((data) => (clients.value = data))
-console.log(clients.value)
-function filteredList() {
-  //Frist 10 names will be initially presented,
+//Getting all json data
+const getClients = async () => {
+  const { data } = await axios.get('http://localhost:3000/clients')
+  clients.value = data
+}
+//To trigger the function
+watchEffect(() => getClients())
 
+function filteredList() {
+  //First 10 names will be initially presented,
   if (!input.value) {
     return clients.value.slice(0, 10)
   }
   return clients.value
     .filter((item) =>
-      `${item.first_name} ${item.last_name} ${item.origin}`.toLowerCase().includes(input.value)
+      `${item.first_name} ${item.last_name} ${item.origin}`
+        .toLowerCase()
+        .includes(input.value.toLowerCase())
     )
     .slice(0, 10)
 }
@@ -25,10 +32,15 @@ function filteredList() {
     <div class="wrapper">
       <input type="text" v-model="input" placeholder="Search clients..." />
       <div class="item" v-for="item in filteredList()" :key="item">
-        <p>
-          {{ `${item.first_name} ${item.last_name}(${item.origin})` }}
-        </p>
+        <!-- Navigate to the detail page -->
+        <RouterLink :to="`/detail/${item.id}`" style="text-decoration: none; color: inherit"
+          ><p>
+            {{ `${item.first_name} ${item.last_name}(${item.origin})` }}
+          </p>
+        </RouterLink>
       </div>
+
+      <!-- If searched name is not available in DB, this message will be presented -->
       <div class="item error" v-if="input && !filteredList().length">
         <p>No results found!</p>
       </div>
@@ -47,7 +59,7 @@ main {
 }
 
 input {
-  width: 350px;
+  width: 50 ;
   padding: 10px 45px;
   background: white;
   font-size: 16px;

@@ -1,5 +1,6 @@
 <template>
   <button>
+    <!-- slot is used to named button component differently -->
     <slot></slot>
   </button>
 </template>
@@ -11,11 +12,12 @@ button {
   padding: 16px 32px;
   text-align: center;
   text-decoration: none;
-  font-size: 16px;
+  font-size: 1rem;
   transition-duration: 0.4s;
   cursor: pointer;
-  width:300px;
-  height: 60px;
+  width:100%;
+  height: auto;
+  overflow: hidden;
   border-radius: 5%;
 
 }

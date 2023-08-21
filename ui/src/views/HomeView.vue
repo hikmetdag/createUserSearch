@@ -5,9 +5,9 @@ import Button from '../components/Button.vue'
 
 <template>
   <main>
-    <h1>Welcome to clients page</h1>
+    <h1>Welcome to the clients page</h1>
     <div>
-      <RouterLink to="/create"><Button>Create Clients</Button></RouterLink>
+      <RouterLink to="/create/"><Button>Create Clients</Button></RouterLink>
       <RouterLink to="/find"><Button>Find Clients </Button></RouterLink>
     </div>
   </main>
@@ -19,16 +19,18 @@ main {
   flex-direction: column;
   align-items: center;
   width: 100%;
+  min-height: 100vh;
 }
 div {
   display: flex;
-  align-items: center;
+  justify-content: center;
   flex-direction: row;
-  gap: 50px;
-  width: 50%;
-  height: 200px;
+  min-width: 100%;
+  min-height: 50vh;
+  gap:5%;
+  margin-top: 40px;
 }
-h1{
-  margin-top: 100px;
+h1 {
+  margin-top: 75px;
 }
 </style>

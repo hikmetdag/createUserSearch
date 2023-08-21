@@ -3,6 +3,7 @@ import HomeView from '../views/HomeView.vue';
 import AboutView from '../views/AboutView.vue';
 import CreateClient from '../views/CreateClientView.vue';
 import FindClient from '../views/FindClientView.vue';
+import GoDetail from '../views/DetailView.vue';
 
 
 const router = createRouter({
@@ -19,7 +20,7 @@ const router = createRouter({
       component: AboutView
     },
     {
-      path: '/create',
+      path: '/create/:id',
       name: 'create',
       component: CreateClient
     },
@@ -27,6 +28,11 @@ const router = createRouter({
       path: '/find',
       name: 'find',
       component: FindClient
+    },
+    {
+      path: '/detail/:id',
+      name: 'detail',
+      component: GoDetail
     }
   ]
 });
