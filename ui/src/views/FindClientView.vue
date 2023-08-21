@@ -30,6 +30,7 @@ function filteredList() {
 <template>
   <main>
     <div class="wrapper">
+      <h2>Find the clients</h2>
       <input type="text" v-model="input" placeholder="Search clients..." />
       <div class="item" v-for="item in filteredList()" :key="item">
         <!-- Navigate to the detail page -->
@@ -54,16 +55,16 @@ main {
   flex-direction: column;
   align-items: center;
   min-height: 100vh;
-  background-color: rgb(234, 242, 255);
+  /* background-color: rgb(234, 242, 255); */
   padding: 40px;
 }
 
 input {
-  width: 50 ;
+  width: 50%;
   padding: 10px 45px;
   background: white;
   font-size: 16px;
-  border: none;
+  border: 2px solid #e7e7e7;
   border-radius: 5px;
   margin-top: 10px;
   box-shadow:
@@ -72,15 +73,17 @@ input {
 }
 
 .item {
-  width: 250px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   margin: 10px;
-  padding: 10px;
   color: black;
   border-radius: 5px;
   background-color: #e7e7e7;
   cursor: pointer;
+  height: auto;
+  width: 50%;
 }
-
 .wrapper {
   padding-top: 10vh;
   width: 500px;

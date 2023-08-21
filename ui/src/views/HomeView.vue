@@ -7,7 +7,7 @@ import Button from '../components/Button.vue'
   <main>
     <h1>Welcome to the clients page</h1>
     <div>
-      <RouterLink to="/create/"><Button>Create Clients</Button></RouterLink>
+      <RouterLink to="/create/:"><Button>Create Clients</Button></RouterLink>
       <RouterLink to="/find"><Button>Find Clients </Button></RouterLink>
     </div>
   </main>
@@ -32,5 +32,6 @@ div {
 }
 h1 {
   margin-top: 75px;
+  font-size: 1.75em;
 }
 </style>

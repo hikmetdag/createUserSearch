@@ -1,6 +1,6 @@
 <script setup>
 import { useRoute, useRouter } from 'vue-router'
-import { ref,watchEffect} from 'vue'
+import { ref, watchEffect } from 'vue'
 import axios from 'axios'
 //useRouter() is used for navigation
 const router = useRouter()
@@ -12,12 +12,21 @@ const getClient = async () => {
   const { data } = await axios.get(`http://localhost:3000/clients/${id}`)
   client.value = data
 }
-watchEffect(()=>getClient())
+watchEffect(() => getClient())
 
 //Function for deleting client
+const status = ref('')
+const errorStatus = ref('')
 const deleteClient = async () => {
-  let result = await axios.delete(`http://localhost:3000/clients/${id}`)
-  router.push({ name: 'home' })
+  try {
+    const result = await axios.delete(`http://localhost:3000/clients/${id}`)
+    status.value = result.status
+    setTimeout(() => {
+      router.push({ name: 'home' })
+    }, '2000')
+  } catch (error) {
+    errorStatus.value = error.name
+  }
 }
 
 //Function for editing client
@@ -31,7 +40,6 @@ const editClient = async () => {
     <div class="container">
       <h1>Client Details</h1>
       <hr />
-      <img v-if="client.photo" :src="`${client.photo}`" />
       <h2>{{ `${client.first_name} ${client.last_name}` }}</h2>
       <h2>{{ client.gender }}</h2>
       <h2>{{ client.email }}</h2>
@@ -41,6 +49,8 @@ const editClient = async () => {
         <button class="edit" @click="editClient()">Edit</button>
         <button class="delete" @click="deleteClient()">Delete</button>
       </div>
+      <div class="status" v-if="status"><p >The client is deleted</p></div>
+      <div style="background-color: red;" v-if="errorStatus"><p >Something went wrong</p></div>
     </div>
   </main>
 </template>
@@ -55,6 +65,10 @@ const editClient = async () => {
   flex-direction: row;
   gap: 5px;
 }
+.status {
+  background-color: green;
+}
+
 button {
   padding: 14px 20px;
   height: 40px;

@@ -1,6 +1,8 @@
 # clientList
 
-This template should help get you started developing with Vue 3 in Vite.
+In this app, there are features to save customer data, search saved customer data, and modify and delete customer data.
+
+Json-server was used as backend and Vue 3 was used as frontend.
 
 ## Recommended IDE Setup
 
@@ -20,6 +22,12 @@ npm install
 
 ```sh
 npm run dev
+```
+
+### To run json-server.
+
+```sh
+npm run db
 ```
 
 ### Compile and Minify for Production

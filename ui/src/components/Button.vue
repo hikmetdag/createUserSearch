@@ -6,7 +6,7 @@
 </template>
 <style scoped>
 button {
-  background-color: white;
+  background-color: #e7e7e7;
   color: black;
   border: 2px solid #e7e7e7;
   padding: 16px 32px;
@@ -23,6 +23,6 @@ button {
 }
 
 button:hover {
-  background-color: #e7e7e7;
+  background-color:white;
 }
 </style>
