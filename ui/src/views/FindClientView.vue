@@ -10,7 +10,7 @@ const getClients = async () => {
   clients.value = data
 }
 //To trigger the function
-watchEffect(() => getClients())
+watchEffect(() =>getClients())
 
 function filteredList() {
   //First 10 names will be initially presented,
@@ -21,7 +21,7 @@ function filteredList() {
     .filter((item) =>
       `${item.first_name} ${item.last_name} ${item.origin}`
         .toLowerCase()
-        .includes(input.value.toLowerCase())
+        .includes(input.value)
     )
     .slice(0, 10)
 }
