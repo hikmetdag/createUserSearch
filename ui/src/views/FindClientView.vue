@@ -4,7 +4,7 @@ import { RouterLink } from 'vue-router'
 import axios from 'axios'
 const clients = ref(null)
 const input = ref('')
-//Getting all json data
+//Getting all users
 const getClients = async () => {
   const { data } = await axios.get('http://localhost:3000/clients')
   clients.value = data
@@ -21,7 +21,7 @@ function filteredList() {
     .filter((item) =>
       `${item.first_name} ${item.last_name} ${item.origin}`
         .toLowerCase()
-        .includes(input.value)
+        .includes(input.value.toLowerCase())
     )
     .slice(0, 10)
 }

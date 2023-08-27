@@ -1,5 +1,5 @@
 <script setup>
-import { reactive, ref, watchEffect} from 'vue'
+import { reactive, ref, watchEffect, onMounted, computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import axios from 'axios'
 import UploadImage from '../components/CloudinaryImage.vue'
@@ -15,8 +15,9 @@ const state = reactive({
   email: '',
   gender: '',
   country: '',
-  url:''
+  url: ''
 })
+
 //This function creates an client.
 const statusCreate = ref('')
 const errorCreate = ref('')
@@ -45,10 +46,15 @@ const getUrl = ({ result }) => {
 }
 
 //Data of the client can be used.
-const client = ref(null)
+const client = ref('')
 const getClient = async () => {
   const { data } = await axios.get(`http://localhost:3000/clients/${id}`)
   client.value = data
+  state.name = data.first_name
+  state.lastName = data.last_name
+  state.email = data.email
+  state.country = data.origin
+  state.gender = data.gender
 }
 watchEffect(() => getClient())
 
@@ -77,56 +83,29 @@ const editData = async () => {
 
 <template>
   <div class="container">
-    <h1 v-if="id.length > 1">{{ `Edit ${client.first_name}` }}</h1>
+    <h1 v-if="id.length > 1">
+      Edit
+      <span v-if="client.gender == 'Male'">Mr.</span>
+      <span v-else>Ms.</span>{{ ` ${client.first_name}` }}
+    </h1>
     <h1 v-else>Register an new client</h1>
     <p v-if="id.length > 1">Please fill in this form to edit the client.</p>
     <p v-else>Please fill in this form to create an client.</p>
     <hr />
     <label for="name"><b>Name</b></label>
-    <input
-      v-if="id.length > 1"
-      type="text"
-      :placeholder="`${client.first_name}`"
-      name="name"
-      v-model="state.name"
-    />
-    <input v-else type="text" placeholder="Enter Name" name="name" v-model="state.name" />
+
+    <input type="text" placeholder="Enter Name" name="name" v-model="state.name" />
 
     <label for="lastName"><b>Last Name</b></label>
-    <input
-      v-if="id.length > 1"
-      type="text"
-      :placeholder="`${client.last_name}`"
-      name="lastName"
-      v-model="state.lastName"
-    />
-    <input
-      v-else
-      type="text"
-      placeholder="Enter Last Name"
-      name="lastName"
-      v-model="state.lastName"
-    />
+    <input type="text" placeholder="Enter Last Name" name="lastName" v-model="state.lastName" />
 
     <label for="email"><b>Email</b></label>
-    <input
-      v-if="id.length > 1"
-      type="text"
-      :placeholder="`${client.email}`"
-      name="email"
-      v-model="state.email"
-    />
-    <input v-else type="text" placeholder="Enter Email" name="email" v-model="state.email" />
+
+    <input type="text" placeholder="Enter Email" name="email" v-model="state.email" />
 
     <label><b>Country</b></label>
-    <input
-      v-if="id.length > 1"
-      type="text"
-      :placeholder="`${client.origin}`"
-      name="country"
-      v-model="state.country"
-    />
-    <input v-else type="text" placeholder="Enter Country" name="country" v-model="state.country" />
+
+    <input type="text" placeholder="Enter Country" name="country" v-model="state.country" />
 
     <label><b>Gender</b></label
     ><br />
@@ -135,9 +114,8 @@ const editData = async () => {
 
     <label><b>Photo</b></label
     ><br />
-    <UploadImage @on-upload="getUrl" class="width:10%;" />
+    <UploadImage @on-upload="getUrl" />
 
-    <p>{{ url }}</p>
     <button v-if="id.length > 1" @click="editData()">Edit</button>
     <button v-else @click="uploadData()">Create</button>
     <div class="status" v-if="statusEdit">
