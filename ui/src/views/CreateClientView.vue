@@ -1,7 +1,8 @@
 <script setup>
-import { reactive, ref, watchEffect } from 'vue'
+import { reactive, ref, watchEffect} from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import axios from 'axios'
+import UploadImage from '../components/CloudinaryImage.vue'
 //To get id by params
 const route = useRoute()
 //id is used for editing
@@ -13,9 +14,9 @@ const state = reactive({
   lastName: '',
   email: '',
   gender: '',
-  country: ''
+  country: '',
+  url:''
 })
-
 //This function creates an client.
 const statusCreate = ref('')
 const errorCreate = ref('')
@@ -26,7 +27,8 @@ const uploadData = async () => {
       email: state.email,
       last_name: state.lastName,
       gender: state.gender,
-      origin: state.country
+      origin: state.country,
+      photo: state.url
     })
     statusCreate.value = result.status
     setTimeout(() => {
@@ -36,6 +38,19 @@ const uploadData = async () => {
     errorCreate.value = error.name
   }
 }
+
+//Getting url of img from cloudinary
+const getUrl = ({ result }) => {
+  state.url = result?.info.secure_url
+}
+
+//Data of the client can be used.
+const client = ref(null)
+const getClient = async () => {
+  const { data } = await axios.get(`http://localhost:3000/clients/${id}`)
+  client.value = data
+}
+watchEffect(() => getClient())
 
 //This function edits the client.
 const statusEdit = ref('')
@@ -47,7 +62,8 @@ const editData = async () => {
       email: state.email,
       last_name: state.lastName,
       gender: state.gender,
-      origin: state.country
+      origin: state.country,
+      photo: state.url.length > 0 ? state.url : client.value.photo
     })
     statusEdit.value = result.status
     setTimeout(() => {
@@ -57,13 +73,6 @@ const editData = async () => {
     errorEdit.value = error.name
   }
 }
-//Data of the client can be used.
-const client = ref(null)
-const getClient = async () => {
-  const { data } = await axios.get(`http://localhost:3000/clients/${id}`)
-  client.value = data
-}
-watchEffect(() => getClient())
 </script>
 
 <template>
@@ -109,7 +118,7 @@ watchEffect(() => getClient())
     />
     <input v-else type="text" placeholder="Enter Email" name="email" v-model="state.email" />
 
-    <label for="psw-repeat"><b>Country</b></label>
+    <label><b>Country</b></label>
     <input
       v-if="id.length > 1"
       type="text"
@@ -119,11 +128,16 @@ watchEffect(() => getClient())
     />
     <input v-else type="text" placeholder="Enter Country" name="country" v-model="state.country" />
 
-    <label for="psw"><b>Gender</b></label
+    <label><b>Gender</b></label
     ><br />
     <input type="radio" id="male" v-model="state.gender" value="Male" /> Male<br />
-    <input type="radio" id="female" v-model="state.gender" value="Female" /> Female<br />
+    <input type="radio" id="female" v-model="state.gender" value="Female" /> Female<br /><br />
 
+    <label><b>Photo</b></label
+    ><br />
+    <UploadImage @on-upload="getUrl" class="width:10%;" />
+
+    <p>{{ url }}</p>
     <button v-if="id.length > 1" @click="editData()">Edit</button>
     <button v-else @click="uploadData()">Create</button>
     <div class="status" v-if="statusEdit">

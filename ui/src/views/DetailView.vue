@@ -40,6 +40,9 @@ const editClient = async () => {
     <div class="container">
       <h1>Client Details</h1>
       <hr />
+      <div v-if="client.photo">
+        <img :src="`${client.photo}`" alt="" />
+      </div>
       <h2>{{ `${client.first_name} ${client.last_name}` }}</h2>
       <h2>{{ client.gender }}</h2>
       <h2>{{ client.email }}</h2>
@@ -49,8 +52,8 @@ const editClient = async () => {
         <button class="edit" @click="editClient()">Edit</button>
         <button class="delete" @click="deleteClient()">Delete</button>
       </div>
-      <div class="status" v-if="status"><p >The client is deleted</p></div>
-      <div style="background-color: red;" v-if="errorStatus"><p >Something went wrong</p></div>
+      <div class="status" v-if="status"><p>The client is deleted</p></div>
+      <div style="background-color: red" v-if="errorStatus"><p>Something went wrong</p></div>
     </div>
   </main>
 </template>
