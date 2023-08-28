@@ -3,7 +3,7 @@ import { defineEmits } from 'vue'
 const emit = defineEmits(['on-upload'])
 
 const widget = window.cloudinary.createUploadWidget(
-  { cloud_name: 'deal8actc', upload_preset: 'qwmj9sa0' },
+  { cloud_name: '', upload_preset: '' },
   (error, result) => {
     if (!error && result && result.event === 'success') {
       emit('on-upload', { result })
